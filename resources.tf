@@ -1,35 +1,49 @@
-resource "kubernetes_pod" "echo" {
+resource "kubernetes_pod" "jenkins_pod" {
   metadata {
-    name = "echo-example"
+    name = "jenkins"
     labels = {
-      App = "echo"
+      App = "jenkins"
     }
   }
   spec {
     container {
-      image = "hashicorp/http-echo:0.2.1"
-      name  = "example2"
-      args  = ["-listen=:80", "-text='Hello World'"]
+      image = "${var.jenkins_image}"
+      name  = "jenkins"
+      volume_mount{
+        mount_path = "/tmp/jenkins-volume"
+        name = "jenkins-volume"
+      }
       port {
-        container_port = 80
+        container_port = 8080
       }
     }
+    volume{
+        name = "jenkins-volume"
+        git_repo{
+          repository = "https://github.com/photonn/devops-pet-jenkins.git"
+        }
+      }
+      #with an exec, move specifc files from cloned repository to /var/jenkins_home and restart jenkins service
   }
 }
 
-resource "kubernetes_service" "echo" {
+resource "kubernetes_service" "jenkins_service" {
   metadata {
-    name = "echo-example"
+    name = "jenkins"
   }
   spec {
     selector = {
-      App = "echo"
+      App = "jenkins"
     }
     port {
-      port        = 80
-      target_port = 80
+      port        = 8080
+      target_port = 8080
     }
     type = "NodePort"
   }
+}
+
+output "connection_point"{  
+  value = "http://localhost:${kubernetes_service.jenkins_service.spec[0].port[0].node_port}"
 }
 
