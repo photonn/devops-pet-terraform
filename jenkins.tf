@@ -10,7 +10,7 @@ resource "kubernetes_pod" "jenkins_pod" {
       image = "${var.jenkins_image}"
       name  = "jenkins"
       volume_mount {
-        mount_path = "/tmp/jenkins-volume"
+        mount_path = "/tmp"
         name       = "jenkins-volume"
       }
       port {
@@ -23,7 +23,12 @@ resource "kubernetes_pod" "jenkins_pod" {
         repository = "https://github.com/photonn/devops-pet-jenkins.git"
       }
     }
-    #with an exec, move specifc files from cloned repository to /var/jenkins_home and restart jenkins service
+    # if a bootstraping variable is set to true, after mapping local volume, bootstrap with config 
+    # from git repo (map volume git_repo type and exec a copy). If false, just map local volume.
+    #exec
+    #Arguments
+    #command - (Optional) Command is the command line to execute inside the container, the working directory for the command is root ('/') in the container's filesystem. The command is simply exec'd, it is not run inside a shell, so traditional shell instructions. To use a shell, you need to explicitly call out to that shell. Exit status of 0 is treated as live/healthy and non-zero is unhealthy.
+
   }
 }
 
