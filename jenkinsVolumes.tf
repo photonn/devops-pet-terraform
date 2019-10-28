@@ -27,7 +27,7 @@ resource "kubernetes_persistent_volume" "jenkins-volume" {
     storage_class_name = "local-storage-class"
     persistent_volume_source {
       host_path {
-        path = "/host_mnt/c/Users/Miguel_Martin/jenkins_data"
+        path = "${var.jenkins-volume-hostpath-path}"
       }
     }
   }

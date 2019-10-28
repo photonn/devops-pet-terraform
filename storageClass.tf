@@ -3,5 +3,5 @@ resource "kubernetes_storage_class" "local-storage-class" {
     name = "local-storage-class"
   }
   storage_provisioner = "docker.io/hostpath"
-  reclaim_policy      = "Retain"
+  reclaim_policy      = "${var.local-storage-class-reclaim-policy}"
 }

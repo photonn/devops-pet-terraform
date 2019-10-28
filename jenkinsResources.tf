@@ -17,7 +17,7 @@ resource "kubernetes_pod" "jenkins_pod" {
       image = "${var.jenkins_image}"
       name  = "jenkins"
       volume_mount {
-        mount_path = "/var/jenkins_home"
+        mount_path = "${var.jenkins-home-path}"
         name       = "jenkins-volume"
       }
       port {
@@ -48,4 +48,3 @@ resource "kubernetes_service" "jenkins-service" {
 output "connection_point" {
   value = "http://localhost:${kubernetes_service.jenkins-service.spec[0].port[0].node_port}"
 }
-

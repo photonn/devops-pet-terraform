@@ -8,10 +8,22 @@ variable "jenkins_image" {
   default     = "jenkins/jenkins"
 }
 
-variable "jenkins_bootstrap" {
-  description = "If set to true, a restart of the container will reset it to default config from git repo"
-  default     = "False"
+variable "local-storage-class-reclaim-policy" {
+  description = "Reclaim policy for the local storage class. Controls if persistent volumes are destroyed or not with terraform destroy"
+  default     = "Retain"
 }
 
-# if a bootstraping variable is set to true, after mapping local volume, bootstrap with config 
-# from git repo (map volume git_repo type and exec a copy). If false, just map local volume.
+variable "jenkins-volume-hostpath-path" {
+  description = "Path on the VM running K8s to bind the host_path type volume"
+  default     = "/host_mnt/c/Users/Miguel_Martin/jenkins_data"
+}
+
+variable "jenkins-home-path" {
+  description = "Path of the directory holding jenkins files on docker image"
+  default     = "/var/jenkins_home"
+}
+
+variable "ansible_image" {
+  description = "Docker ansible image to deploy"
+  default     = "ansible/ansible"
+}
