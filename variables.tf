@@ -27,3 +27,8 @@ variable "ansible_image" {
   description = "Docker ansible image to deploy"
   default     = "ansible/ansible"
 }
+
+variable "docker-socks-path" {
+  description = "Docker socks path"
+  default     = "/var/run/docker.sock"
+}

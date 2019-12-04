@@ -30,10 +30,9 @@ resource "kubernetes_pod" "jenkins_pod" {
   }
 }
 
-
-resource "kubernetes_service" "jenkins-service-8080" {
+resource "kubernetes_service" "jenkins-service" {
   metadata {
-    name      = "jenkins-service-8080"
+    name      = "jenkins-service"
     namespace = "devops-pet-project"
   }
   spec {
@@ -55,5 +54,5 @@ resource "kubernetes_service" "jenkins-service-8080" {
 }
 
 output "connection_point" {
-  value = "http://localhost:${kubernetes_service.jenkins-service-8080.spec[0].port[0].node_port}"
+  value = "http://localhost:${kubernetes_service.jenkins-service.spec[0].port[0].node_port}"
 }
